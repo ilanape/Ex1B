@@ -1,3 +1,4 @@
+import filecmp
 from collections import Counter
 from queue import PriorityQueue
 from TreeNode import TreeNode
@@ -11,11 +12,11 @@ class HuffmanCoding:
         # input file parsing
         try:
             input_file = open("Input Text File", "r")
-            text_file = input_file.read()
         except IOError:
             print('"Input Text File" does not exist')
             input_file.close()
 
+        text_file = input_file.read()
         # compute frequencies
         freq = Counter(text_file)
 
@@ -61,15 +62,15 @@ class HuffmanCoding:
         d.update(self.huffman_code(right, binary_string + '1'))
         return d
 
-    def decompress(self):
+    def decompress(self, file):
         # input file parsing
         try:
-            input_file = open("Compressed version", "r")
-            encoded_text = input_file.read()
+            input_file = open(file, "r")
         except IOError:
-            print('"Compressed version" does not exist')
+            print('file does not exist')
             input_file.close()
 
+        encoded_text = input_file.read()
         # output file creation
         decoded_text = open("Decoded Text", "w")
         code = ""
@@ -87,19 +88,9 @@ class HuffmanCoding:
             if code == val:
                 return key
 
-    def compare(self):
-
 
 if __name__ == "__main__":
-    # if sys.argv[1] == 'compress':
-    #     compress()
-    # elif sys.argv[1] == 'decompress':
-    #     decompress()
-    # elif sys.argv[1] == 'compare':
-    #     compare()
-    # else:
-    #     print('Invalid format: HuffmanCoding.py [compress/decompress/compare]')
-
     huffmanInstance = HuffmanCoding()
     huffmanInstance.compress()
-    huffmanInstance.decompress()
+    huffmanInstance.decompress("Compressed version")
+    print(filecmp.cmp("Input Text File", "Decoded Text", shallow=False))
