@@ -93,4 +93,7 @@ if __name__ == "__main__":
     huffmanInstance = HuffmanCoding()
     huffmanInstance.compress()
     huffmanInstance.decompress("Compressed version")
-    print(filecmp.cmp("Input Text File", "Decoded Text", shallow=False))
+    if filecmp.cmp("Input Text File", "Decoded Text", shallow=False):
+        print("good")
+    else:
+        print("bad")
