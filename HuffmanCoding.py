@@ -7,7 +7,7 @@ from TreeNode import TreeNode
 def compress():
     # input file parsing
     try:
-        input_file = open("Input Text File", "r")
+        input_file = open("Input Text File.txt", "rt")
     except IOError:
         print('"Input Text File" does not exist')
         input_file.close()
@@ -35,11 +35,11 @@ def compress():
 
     # output files creation
     length = 0
-    compressed_version = open("Compressed version", "w")
-    compressed_length = open("Compressed length", "w")
+    compressed_version = open("Compressed version.txt", "wt")
+    compressed_length = open("Compressed length.txt", "wt")
 
     for letter in text_file:
-        compressed_version.write(table[letter])
+        compressed_version.write(table_to_share[letter])
         length += len(table_to_share[letter])
 
     compressed_length.write(str(length))
@@ -62,7 +62,7 @@ def huffman_code(node, binary_string=""):
     return d
 
 
-def decompress(self, file, shared_table):
+def decompress(file, shared_table):
     # input file parsing
     try:
         input_file = open(file, "r")
@@ -72,13 +72,13 @@ def decompress(self, file, shared_table):
 
     encoded_text = input_file.read()
     # output file creation
-    decoded_text = open("Decoded Text", "w")
+    decoded_text = open("Decoded Text.txt", "wt")
     code = ""
     for bit in encoded_text:
         code += bit
         # code is in table
         if code in shared_table.values():
-            decoded_text.write(self.get_key(code))
+            decoded_text.write(get_key(code))
             code = ""
 
     decoded_text.close()
@@ -92,8 +92,8 @@ def get_key(code):
 
 if __name__ == "__main__":
     table = compress()
-    decompress("Compressed version", table)
-    if filecmp.cmp("Input Text File", "Decoded Text", shallow=False):
+    decompress("Compressed version.txt", table)
+    if filecmp.cmp("Input Text File.txt", "Decoded Text.txt", shallow=False):
         print("good")
     else:
         print("bad")
